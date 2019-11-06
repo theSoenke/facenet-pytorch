@@ -333,7 +333,7 @@ class MTCNN(nn.Module):
         """
 
         with torch.no_grad():
-            batch_boxes = detect_face(
+            batch_boxes, landmarks = detect_face(
                 img, self.min_face_size,
                 self.pnet, self.rnet, self.onet,
                 self.thresholds, self.factor,
@@ -360,7 +360,7 @@ class MTCNN(nn.Module):
             boxes = boxes[0]
             probs = probs[0]
 
-        return boxes, probs
+        return boxes, probs, landmarks
 
 
 def prewhiten(x):

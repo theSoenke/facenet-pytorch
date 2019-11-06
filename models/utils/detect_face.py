@@ -45,6 +45,7 @@ def detect_face(imgs, minsize, pnet, rnet, onet, threshold, factor, device):
         minl = minl * factor
 
     batch_boxes = []
+    batch_points = []
     for img, total_boxes in zip(imgs, total_boxes_all):
         numbox = total_boxes.shape[0]
         if numbox>0:
@@ -118,10 +119,11 @@ def detect_face(imgs, minsize, pnet, rnet, onet, threshold, factor, device):
                 pick = nms(total_boxes, 0.7, 'Min')
                 total_boxes = total_boxes[pick, :]
                 points = points[:, pick]
-        
+
+            batch_points.append(points)
         batch_boxes.append(total_boxes)
 
-    return np.array(batch_boxes)
+    return np.array(batch_boxes), batch_points
 
 
 def bbreg(boundingbox,reg):
